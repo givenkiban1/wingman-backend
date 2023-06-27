@@ -1,10 +1,10 @@
 # Instead of creating an image from scratch, we use this image which has python installed.
-FROM python:3.8.6-buster
+FROM python:3.10.6-buster
 
 
 # COPY allows you to select the folders and files to include in your docker image
 # Here, we will include our api_folder and the requiremenets.txt file
-COPY api_folder /api_folder
+COPY wingman_api /wingman_api
 COPY requirements.txt /requirements.txt
 
 
@@ -19,7 +19,7 @@ RUN pip install -r requirements.txt
 # Here, we use uvicorn to control the web server ports
 
 # local
-CMD uvicorn api_folder.api_file:api --host 0.0.0.0
+CMD uvicorn wingman_api.api:api --host 0.0.0.0
 
 # deploy to gcp
-# CMD uvicorn api_folder.api_file:api --host 0.0.0.0 --port $PORT
+# CMD uvicorn wingman_api.api:api --host 0.0.0.0 --port $PORT

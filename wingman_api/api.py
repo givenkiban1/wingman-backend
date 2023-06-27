@@ -9,7 +9,7 @@ def index():
 
 
 @api.get("/predict")
-def predict(feature1, feature2):
+def predict( feature1: float, feature2: float):
 
     # model = picle.load_model()
     # prediction = model.predict(feature1, feature2)
