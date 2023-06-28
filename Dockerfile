@@ -19,7 +19,7 @@ RUN pip install -r requirements.txt
 # Here, we use uvicorn to control the web server ports
 
 # local
-CMD uvicorn wingman_api.api.wing:api --host 0.0.0.0
+# CMD uvicorn wingman_api.api.wing:api --host 0.0.0.0
 
 # deploy to gcp
-# CMD uvicorn wingmanwingman_api.api.wing:api --host 0.0.0.0 --port $PORT
+CMD uvicorn wingman_api.api.wing:api --host 0.0.0.0 --port $PORT
