@@ -11,7 +11,7 @@ def index():
 @api.get("/predict")
 def predict( feature1: float, feature2: float):
 
-    # model = picle.load_model()
+    # model = pickle.load_model()
     # prediction = model.predict(feature1, feature2)
 
     # Here, I'm only returning the features, since I don't actually have a model.
