@@ -47,11 +47,12 @@ def train_test(data):
 
 # functions
 
-def initialize_model(input_shape: tuple):
+def initialize_model():
     model = RandomForestClassifier(n_estimators= 2500, min_samples_split=5, min_samples_leaf=15,
                                         max_features= 'sqrt', max_depth=168, bootstrap=False)
     return model
 
+model=initialize_model()
 
 def train_model(
         model: model,

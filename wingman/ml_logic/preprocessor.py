@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-from encoder import *
+from wingman.ml_logic.encoder import *
 
 # functions
 

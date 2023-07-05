@@ -2,20 +2,20 @@
 import pandas as pd
 import numpy as np
 
-from ml_logic.data import get_data_with_cache, clean_data, load_data_to_bq
-from ml_logic.preprocessor import preprocess_features
-from ml_logic.model import train_test, initialize_model, train_model, evaluate_model
-from ml_logic.registry import save_results, save_model, load_model
+from wingman.ml_logic.data import get_data_with_cache, clean_data, load_data_to_bq
+from wingman.ml_logic.preprocessor import preprocess_features
+from wingman.ml_logic.model import train_test, initialize_model, train_model, evaluate_model
+from wingman.ml_logic.registry import save_results, save_model, load_model
 
-from params import *
+from wingman.params import *
 from pathlib import Path
 
 
 query = f"""SELECT * FROM {GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"""
-data_query_cache_path = Path(LOCAL_DATA_PATH).joinpath('preclean', f"query_{DATA_SIZE}.csv")
+cache_path = Path(LOCAL_DATA_PATH).joinpath('preclean', f"query_{DATA_SIZE}.csv")
 
 # functions
-def preprocess(query, cache_path, table):
+def preprocess(query=query, cache_path=cache_path, table=''):
     '''
     uses the following functions:
     data.get_data_with_cache()
@@ -30,7 +30,7 @@ def preprocess(query, cache_path, table):
     return data_preproc
 
 
-def train_evaluate (query, cache_path, stage='Production'):
+def train_evaluate (query=query, cache_path=cache_path, stage='Production'):
     data = get_data_with_cache(query, cache_path)
     X_train, X_test, y_train, y_test = train_test(data)
     model = load_model(stage)

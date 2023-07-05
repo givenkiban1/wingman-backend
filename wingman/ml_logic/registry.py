@@ -8,7 +8,7 @@ from tensorflow import keras
 from google.cloud import storage
 import mlflow
 from mlflow.tracking import MlflowClient
-from params import *
+from wingman.params import *
 
 # functions
 def save_results(params: dict, metrics: dict) -> None:
