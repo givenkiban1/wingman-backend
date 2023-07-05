@@ -28,10 +28,27 @@ def transition_model():
 @flow()
 def train_flow():
     '''
-    uses the following functions:
+    uses the following functions to push to ml_flow:
     preprocess_new_data()
     evaluation_production_model()
     re_train()
     transition_model()
     '''
-    pass # replaces best model based on added data
+    preprocessed = preprocess_new_data.submit()
+
+    old_accuracy = evaluate_production_model.submit(wait_for=[preprocessed])
+    new_accuracy = re_train.submit(wait_for=[preprocessed])
+
+    old_accuracy = old_accuracy.result()
+    new_accuracy = new_accuracy.result()
+
+    if new_accuracy < old_accuracy:
+        print(f"🚀 New model replacing old in production with accuracy: {new_accuracy} the Old accuracy was: {old_accuracy}")
+        transition_model.submit(current_stage="Staging", new_stage="Production")
+    else:
+        print(f"🚀 Old model kept in place with accuracy: {old_accuracy}. The new accuracy was: {new_accuracy}")
+
+
+
+if __name__ == "__main__":
+    train_flow()
