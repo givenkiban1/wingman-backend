@@ -55,7 +55,7 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
     def y_pred_top(model, X_pred):
         probabilities = model.predict_proba(X_pred)
         # Find the indices of the top three classes with highest probabilities
-        top_classes_indices = np.argsort(-probabilities, axis=1)[:, :3]
+        top_classes_indices = np.argsort(-probabilities, axis=1)[:, :1]
         # Get the class labels corresponding to the top three classes
         top_classes = model.classes_[top_classes_indices]
         # Print the three most likely classes for each prediction

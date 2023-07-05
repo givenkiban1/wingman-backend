@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+import pickle
+import numpy as np
 
 api = FastAPI()
 
@@ -9,12 +11,17 @@ def index():
 
 
 @api.get("/predict")
-def predict( feature1: float, feature2: float):
+def predict(X_input):
 
-    # model = pickle.load_model()
-    # prediction = model.predict(feature1, feature2)
+    model = pickle.load_model()
+    y_pred = model.predict(X_input)[0]
 
-    # Here, I'm only returning the features, since I don't actually have a model.
-    # In a real life setting, you would return the predictions.
+    subcat_legend = {1: "Handling",
+                     2: "Systems",
+                     3: "Structural",
+                     4: "Propeller",
+                     5: "Power Plant",
+                     6: "Oper/Perf/Capability",
+                     7: "Fluids / Misc Hardware"}
 
-    return {'prediction': int(feature1)*int(feature2)}
+    return {'prediction': subcat_legend[y_pred]}
