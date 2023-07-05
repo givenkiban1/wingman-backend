@@ -6,10 +6,12 @@ from wingman.ml_logic.encoder import *
 
 # functions
 
-def preprocess_features(X: pd.DataFrame, target_columns: list) -> pd.DataFrame:
+
+def preprocess_features(X: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses the features of the cleaned dataset.
     """
+    target_columns = list(X.columns)
 
     certs_held = transform_yes_no(X[['certs_held']])
     second_pilot = transform_yes_no(X[['second_pilot']])

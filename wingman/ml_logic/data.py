@@ -21,11 +21,11 @@ def clean_data(X: pd.DataFrame) -> pd.DataFrame:
     """
 
     ## Drop Duplicates
-    wingman_data = X.drop_duplicates()
+    data = X.drop_duplicates()
 
     ## Filter out rows to only contain 'HP' values in 'hp_or_lbs' column
-    mask = wingman_data['hp_or_lbs'] == 'HP'
-    wingman_data = wingman_data[mask]
+    mask = data['hp_or_lbs'] == 'HP'
+    wingman_data = data[mask]
 
     ## Drop Rows
     wingman_data_cleaned = wingman_data.dropna(subset=['acft_make', 'acft_model', 'acft_category'], how='any')
@@ -33,8 +33,7 @@ def clean_data(X: pd.DataFrame) -> pd.DataFrame:
     ## Drop Columns
     wingman_data_cleaned.drop([
         'afm_hrs_last_insp', 'elt_install', 'elt_type', 'oper_dba', 'crew_tox_perf', 'mr_faa_med_certf', 'eng_model',
-        'propeller_type', 'available_restraint', 'eng_no', 'hp_or_lbs', 'acft_model'
-        ], axis=1, inplace=True)
+        'propeller_type', 'available_restraint', 'eng_no', 'hp_or_lbs', 'acft_model'], axis=1, inplace=True)
 
     ## Imputing Process
     features_numeric_1 = ['dprt_time']
@@ -94,11 +93,11 @@ def clean_data(X: pd.DataFrame) -> pd.DataFrame:
     c = ['dprt_time', 'cert_max_gr_wt', 'afm_hrs', 'total_seats', 'power_units', 'num_eng', 'type_last_insp', 'second_pilot', 'site_seeing', 'air_medical', 'crew_sex',
         'certs_held', 'dprt_apt_id', 'dest_apt_id', 'flt_plan_filed', 'pc_profession', 'eng_type', 'carb_fuel_injection', 'type_fly', 'eng_mfgr']
 
-    wingman_data_preproc = pd.DataFrame(wingman_data_preproc, columns=c)
+    wingman_data_preproc2 = pd.DataFrame(wingman_data_preproc, columns=c)
 
-    wingman_data_cleaned = wingman_data_cleaned.drop(columns=c)
+    wingman_data_cleaned.drop(columns=c, inplace=True)
 
-    wingman_data_cl_imp = pd.merge(wingman_data_cleaned, wingman_data_preproc, left_index=True, right_index=True)
+    wingman_data_cl_imp = pd.merge(wingman_data_cleaned, wingman_data_preproc2, left_index=True, right_index=True)
 
     ## Fixing Dtypes
     wingman_data_cl_imp['total_seats'] = wingman_data_cl_imp['total_seats'].astype('int64')
