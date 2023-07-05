@@ -1,9 +1,4 @@
 # imports
-import os
-
-import requests
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from prefect import task, flow
 
 from wingman.interface.main import evaluate, preprocess, train
