@@ -28,7 +28,7 @@ def transition_model():
 @flow()
 def train_flow():
     '''
-    uses the following functions:
+    uses the following functions to push to ml_flow:
     preprocess_new_data()
     evaluation_production_model()
     re_train()
