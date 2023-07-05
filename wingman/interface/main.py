@@ -19,7 +19,6 @@ def train():
     data.get_data_with_cache()
     registry.load_model()
     model.initalize_model()
-    model.complie_model()
     model.train_model()
     registry.save_results()
     registry.save_model()
