@@ -42,8 +42,8 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
 
     model = load_model()
     assert model is not None
-
-    X_processed = preprocess_features(X_pred, target_columns=[])
+    X_clean = clean_data(X_pred)
+    X_processed = preprocess_features(X_clean, target_columns=[])
     y_pred = model.predict(X_processed)
 
     print("\n✅ prediction done: ", y_pred, y_pred.shape, "\n")

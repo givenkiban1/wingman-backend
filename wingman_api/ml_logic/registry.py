@@ -5,7 +5,7 @@ import time
 import pickle
 from pathlib import Path
 from colorama import Fore, Style
-from tensorflow import keras
+# from tensorflow import keras
 from google.cloud import storage
 from sklearn.ensemble import RandomForestClassifier
 from wingman_api.params import *
@@ -135,6 +135,10 @@ def load_model(stage="Production") -> RandomForestClassifier:
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
             latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
+            print(latest_model_path_to_save)
+            if (os.path.exists(latest_model_path_to_save)):
+                os.remove(latest_model_path_to_save)
+
             latest_blob.download_to_filename(latest_model_path_to_save)
 
             latest_model = pickle.load(open(latest_model_path_to_save, 'rb'))
