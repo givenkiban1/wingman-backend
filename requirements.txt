@@ -1,7 +1,6 @@
 bigquery
 db-dtypes
 fastapi
-glob
 google-cloud-bigquery
 google-cloud-storage
 ipdb
@@ -16,5 +15,6 @@ pylint
 pytest
 scikit-learn
 seaborn
-time
 uvicorn
+typing
+pydantic
