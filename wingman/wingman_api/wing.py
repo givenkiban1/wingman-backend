@@ -123,6 +123,7 @@ async def predict(x_input: X_input):
     # X_preproc = preprocess_features(X_input)
 
     y_pred = api.state.model.predict(df2)[0]
+    proba = api.state.model.predict_proba(df2)[0]
 
     subcat_legend = {1: "Handling",
                      2: "Systems",
@@ -135,6 +136,6 @@ async def predict(x_input: X_input):
 
 
 
-    return dict(prediction = subcat_legend[y_pred])
+    return dict(prediction = subcat_legend[y_pred], proba = proba)
 
 #    return {'prediction': subcat_legend[y_pred]}
