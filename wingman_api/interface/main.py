@@ -43,7 +43,7 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
     model = load_model()
     assert model is not None
 
-    X_processed = preprocess_features(X_pred)
+    X_processed = preprocess_features(X_pred, target_columns=[])
     y_pred = model.predict(X_processed)
 
     print("\n✅ prediction done: ", y_pred, y_pred.shape, "\n")
@@ -84,19 +84,20 @@ def train_n_save(wingman_data: pd.DataFrame = None) -> np.ndarray:
 
 if __name__ == "__main__":
 
-    # ## Import data from GBQ
-    query = f"""SELECT * FROM {GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"""
-    data_query_cache_path = Path(LOCAL_DATA_PATH).joinpath("preclean", f"query_{DATA_SIZE}.csv")
+    # # ## Import data from GBQ
+    # query = f"""SELECT * FROM {GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"""
+    # data_query_cache_path = Path(LOCAL_DATA_PATH).joinpath("preclean", f"query_{DATA_SIZE}.csv")
 
-    print(data_query_cache_path)
-    if not os.path.exists(Path(LOCAL_DATA_PATH).joinpath("preclean")):
-        # Create the directory
-        os.makedirs(Path(LOCAL_DATA_PATH).joinpath("preclean"))
+    # print(data_query_cache_path)
+    # if not os.path.exists(Path(LOCAL_DATA_PATH).joinpath("preclean")):
+    #     # Create the directory
+    #     os.makedirs(Path(LOCAL_DATA_PATH).joinpath("preclean"))
 
-    wingman_data = get_data_with_cache(GCP_PROJECT, query, data_query_cache_path)
+    # wingman_data = get_data_with_cache(GCP_PROJECT, query, data_query_cache_path)
 
-    # Train and save model
-    train_n_save(wingman_data)
+    # # Train and save model
+    # train_n_save(wingman_data)
 
-    # # Predict
-    # pred()
+    # Predict
+    df = pd.read_csv('notebooks/inputs.csv')
+    pred(df)

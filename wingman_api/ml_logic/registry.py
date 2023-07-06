@@ -129,12 +129,15 @@ def load_model(stage="Production") -> RandomForestClassifier:
         client = storage.Client()
         blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
 
+        for blob in blobs:
+            print(blob.name)
+
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
             latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
             latest_blob.download_to_filename(latest_model_path_to_save)
 
-            latest_model = keras.models.load_model(latest_model_path_to_save)
+            latest_model = pickle.load(open(latest_model_path_to_save, 'rb'))
 
             print("✅ Latest model downloaded from cloud storage")
 
