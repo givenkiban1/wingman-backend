@@ -12,6 +12,7 @@ from tensorflow import keras
 from keras import Model
 from sklearn.ensemble import RandomForestClassifier
 from keras.callbacks import EarlyStopping
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
@@ -36,3 +37,15 @@ def fit_model(model: Model, X: np.ndarray, y: np.ndarray) -> Model:
     print("✅ Model fitted")
 
     return model
+
+
+def evaluate_model(model: Model, X: np.ndarray, y: np.ndarray) -> Tuple[float, float]:
+    """
+    Evaluate the model on the test set
+    """
+    print('🚨 🚨 🚨' + Fore.BLUE + "\nEvaluating model..." + Style.RESET_ALL)
+
+    base = max(y.value_counts()/len(y))
+    print("✅ Random Selection Accuracy: %.2f%%" % (base * 100.0))
+
+    return base
