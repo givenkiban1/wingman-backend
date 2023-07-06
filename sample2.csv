@@ -1,0 +1,2 @@
+id,total_seats,afm_hrs,cert_max_gr_wt,dprt_time,power_units,flight_hours_mean,type_last_insp_ANNL,eng_mfgr_CONTINENTAL,eng_mfgr_LYCOMING,far_part_091,far_part_infrequent_sklearn,acft_make_CESSNA,acft_make_infrequent_sklearn,fixed_retractable_RETR,acft_category_AIR,acft_category_infrequent_sklearn,homebuilt,crew_category_DSTU,crew_category_PLT
+20100809X157451,4,228,2300,1900,180,2660.0,1.0,0.0,1.0,1.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0

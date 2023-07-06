@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from google.cloud import bigquery
 from pathlib import Path
 
-from params import *
+from wingman.params import *
 
 
 # functions

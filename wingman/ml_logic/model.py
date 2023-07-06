@@ -4,7 +4,7 @@ from typing import Tuple
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-
+import pickle
 
 def train_test(data):
     data = data.drop(columns=['_AOBV', 'site_seeing', 'air_medical', '_BUS ', '_POSI', 'type_last_insp_COAW',
@@ -22,12 +22,6 @@ def train_test(data):
     return X_train, X_test, y_train, y_test
 
 # functions
-# imports
-import numpy as np
-from typing import Tuple
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
 
 
 def train_test(data):
@@ -54,16 +48,26 @@ def initialize_model(input_shape: tuple):
 
 
 def train_model(
-        model: model,
+        model: RandomForestClassifier,
         X_train: np.ndarray,
         y_train: np.ndarray,
     ):
     return model.fit(X_train, y_train)
 
 def evaluate_model(
-        model: model,
+        model: RandomForestClassifier,
         X_test: np.ndarray,
         y_test: np.ndarray,
     ):
     y_pred = model.predict(X_test)
     return accuracy_score(y_test, y_pred)
+
+def pickle_file(model):
+    # Export Pipeline as pickle file
+    with open("model.pkl", "wb") as file:
+        pickle.dump(model, file)
+
+    # Load Pipeline from pickle file
+    my_pipeline = pickle.load(open("pipeline.pkl","rb"))
+
+    my_pipeline.score(X_test, y_test)

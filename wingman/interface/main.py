@@ -2,12 +2,12 @@
 import pandas as pd
 import numpy as np
 
-from ml_logic.data import get_data_with_cache, clean_data, load_data_to_bq
-from ml_logic.preprocessor import preprocess_features
-from ml_logic.model import train_test, initialize_model, train_model, evaluate_model
-from ml_logic.registry import save_results, save_model, load_model
+from wingman.ml_logic.data import get_data_with_cache, clean_data, load_data_to_bq
+from wingman.ml_logic.preprocessor import preprocess_features
+from wingman.ml_logic.model import train_test, initialize_model, train_model, evaluate_model
+from wingman.ml_logic.registry import save_results, save_model, load_model
 
-from params import *
+from wingman.params import *
 from pathlib import Path
 
 
@@ -31,10 +31,17 @@ def preprocess(query, cache_path, table):
 
 
 def train_evaluate (query, cache_path, stage='Production'):
+
     data = get_data_with_cache(query, cache_path)
+
     X_train, X_test, y_train, y_test = train_test(data)
+
     model = load_model(stage)
-    model = train_model(model, X_train, y_train)
+
+    if model == None:
+        model = initialize_model()
+
+    train_model(model, X_train, y_train)
     accuracy_score = evaluate_model(model, X_test, y_test)
     params = dict(context='evaluate')
     metrics=dict(accuracy=accuracy_score)
@@ -52,8 +59,8 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
     X_clean = clean_data(X_pred)
     X_preproc = preprocess_features(X_clean)
 
-    def y_pred_top(model, X_pred):
-        probabilities = model.predict_proba(X_pred)
+    def y_pred_top(model):
+        probabilities = model.predict_proba(X_preproc)
         # Find the indices of the top three classes with highest probabilities
         top_classes_indices = np.argsort(-probabilities, axis=1)[:, :1]
         # Get the class labels corresponding to the top three classes
@@ -65,7 +72,7 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
                 print(f"Prediction {i+1}: {classes}")
                 count += 1
 
-    y_pred = y_pred_top(model, X_pred)
+    y_pred = y_pred_top(model)
     return y_pred
 
 if __name__ == '__main__':
