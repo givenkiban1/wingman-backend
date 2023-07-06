@@ -1,7 +1,7 @@
 # imports
 from prefect import task, flow
 
-from wingman.interface.main import evaluate, preprocess, train
+from wingman.interface.main import train_evaluate, preprocess
 from wingman.ml_logic.registry import mlflow_transition_model
 from wingman.params import *
 
@@ -14,11 +14,11 @@ def preprocess_new_data():
 
 @task
 def evaluate_production_model():
-    return evaluate()
+    return train_evaluate()
 
 @task
 def re_train():
-    return train()
+    return train_evaluate()
 
 @task
 def transition_model():

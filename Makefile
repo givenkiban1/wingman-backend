@@ -29,11 +29,6 @@ test_gcp_setup:
 default:
 	cat tests/api/test_output.txt
 
-test_kitt:
-	@echo "\n 🧪 computing and saving your progress at 'tests/api/test_output.txt'..."
-	@pytest tests/api -c "./tests/pytest_kitt.ini" 2>&1 > tests/api/test_output.txt || true
-	@echo "\n 🙏 Please: \n git add tests \n git commit -m 'checkpoint' \n ggpush"
-
 test_api_root:
 	pytest \
 	tests/api/test_endpoints.py::test_root_is_up --asyncio-mode=strict -W "ignore" \

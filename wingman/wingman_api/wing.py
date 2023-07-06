@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 import pickle
 import numpy as np
+import pandas as pd
+
+from wingman.ml_logic.preprocessor import preprocess_features
+from wingman.ml_logic.registry import load_model
 
 api = FastAPI()
+api.state.model = pickle.load(open("model.pkl","rb"))
 
 # define a root `/` endpoint
 @api.get("/")
@@ -11,10 +16,12 @@ def index():
 
 
 @api.get("/predict")
-def predict(X_input):
+def predict(csv_input):
 
-    model = pickle.load_model()
-    y_pred = model.predict(X_input)[0]
+    X_input = pd.read_csv(csv_input)
+    X_preproc = preprocess_features(X_input)
+
+    y_pred = api.state.model.predict(X_preproc)[0]
 
     subcat_legend = {1: "Handling",
                      2: "Systems",
@@ -24,4 +31,9 @@ def predict(X_input):
                      6: "Oper/Perf/Capability",
                      7: "Fluids / Misc Hardware"}
 
-    return {'prediction': subcat_legend[y_pred]}
+
+
+
+    return dict(prediction = subcat_legend[y_pred])
+
+#    return {'prediction': subcat_legend[y_pred]}
