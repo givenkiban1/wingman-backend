@@ -12,7 +12,7 @@ from typing import List
 api = FastAPI()
 print(os.getcwd())
 try:
-    api.state.model = pickle.load(open("/../wingman_api/model.pkl","rb")) # /../wingman_api/
+    api.state.model = pickle.load(open("model.pkl","rb")) # /../wingman_api/
 except Exception as e:
     print(str(e))
     print(os.getcwd())
