@@ -22,4 +22,4 @@ RUN pip install -r requirements.txt
 # CMD uvicorn wingman_api.wing:api --host 0.0.0.0
 
 # deploy to gcp
-CMD uvicorn wingman_api.api.wing:api --host 0.0.0.0 --port $PORT
+CMD uvicorn wingman_api.wing:api --host 0.0.0.0 --port $PORT

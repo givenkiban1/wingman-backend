@@ -11,7 +11,11 @@ from typing import List
 
 api = FastAPI()
 print(os.getcwd())
-api.state.model = pickle.load(open("model.pkl","rb"))
+try:
+    api.state.model = pickle.load(open("/../wingman_api/model.pkl","rb")) # /../wingman_api/
+except Exception as e:
+    print(str(e))
+    print(os.getcwd())
 
 # define a root `/` endpoint
 @api.get("/")
@@ -41,9 +45,59 @@ PREPROCESSED_FIELDS = [
  'crew_category_PLT'
 ]
 
+class Prediction(BaseModel):
+    prediction: str = ""
+    proba: list = []
+    subcat_legend: dict = {}
+    y_pred: List[int] = []
+
+class X_input(BaseModel):
+   field_names: list
+   values: list
+
+@api.post("/predict", response_model=Prediction)
+async def predict(x_input: X_input):
+
+    obj2 = {}
+    for field in PREPROCESSED_FIELDS:
+        obj2[field] = [0]
+
+    df2 = pd.DataFrame(data=obj2)
+
+    for index,val in enumerate(x_input.field_names):
+        df2[val] = x_input.values[index]
+
+
+    # X_input = pd.DataFrame(data=obj)
+    # X_preproc = preprocess_features(X_input)
+
+    y_pred = api.state.model.predict(df2).tolist()
+    proba = api.state.model.predict_proba(df2).tolist()
+
+    print(type(y_pred))
+
+    subcat_legend = {1: "Handling",
+                     2: "Systems",
+                     3: "Structural",
+                     4: "Propeller",
+                     5: "Power Plant",
+                     6: "Oper/Perf/Capability",
+                     7: "Fluids / Misc Hardware"}
+    data = Prediction()
+    data.prediction = subcat_legend[y_pred[0]]
+    data.proba = proba
+    data.subcat_legend = subcat_legend
+    data.y_pred = y_pred
+
+
+
+    # return dict(prediction = subcat_legend[y_pred], proba = proba)
+    return data
+
+#    return {'prediction': subcat_legend[y_pred]}
+
 
 # original preprocessed fields
-
 # 'num_eng',
 #  'total_seats',
 #  'afm_hrs',
@@ -101,41 +155,3 @@ PREPROCESSED_FIELDS = [
 #  'flt_plan_filed_NONE',
 #  'flt_plan_filed_VFR',
 #  'pc_profession'
-
-class X_input(BaseModel):
-   field_names: list
-   values: list
-
-@api.post("/predict")
-async def predict(x_input: X_input):
-
-    obj2 = {}
-    for field in PREPROCESSED_FIELDS:
-        obj2[field] = [0]
-
-    df2 = pd.DataFrame(data=obj2)
-
-    for index,val in enumerate(x_input.field_names):
-        df2[val] = x_input.values[index]
-
-
-    # X_input = pd.DataFrame(data=obj)
-    # X_preproc = preprocess_features(X_input)
-
-    y_pred = api.state.model.predict(df2)[0]
-    proba = api.state.model.predict_proba(df2)[0]
-
-    subcat_legend = {1: "Handling",
-                     2: "Systems",
-                     3: "Structural",
-                     4: "Propeller",
-                     5: "Power Plant",
-                     6: "Oper/Perf/Capability",
-                     7: "Fluids / Misc Hardware"}
-
-
-
-
-    return dict(prediction = subcat_legend[y_pred], proba = proba)
-
-#    return {'prediction': subcat_legend[y_pred]}

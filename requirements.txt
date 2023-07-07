@@ -13,7 +13,7 @@ prefect
 pyarrow
 pylint
 pytest
-scikit-learn
+scikit-learn==1.2.2
 seaborn
 uvicorn
 typing
